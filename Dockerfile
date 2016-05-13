@@ -55,6 +55,8 @@ RUN mkdir /vesta-start \
     && rm -rf /usr/local/vesta \
     && ln -s /vesta/local/vesta /usr/local/vesta
 
+VOLUME /vesta
+
 RUN mkdir -p /etc/my_init.d
 ADD startup.sh /etc/my_init.d/startup.sh
 RUN chmod +x /etc/my_init.d/startup.sh
