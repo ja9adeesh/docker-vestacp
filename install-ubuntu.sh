@@ -144,7 +144,7 @@ check_result $? "No access to Vesta repository"
 
 # Set hostname if it wasn't set
 if [ -z "$servername" ]; then
-    servername=$(hostname -f)
+    servername="vesta.docker"
 fi
 
 # Set email if it wasn't set
