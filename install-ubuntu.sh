@@ -19,8 +19,9 @@ vestacp="http://$CHOST/$VERSION/$release"
 software="nginx
         php7.0-fpm php7.0-common
         php7.0-mysql php7.0-curl php7.0-pgsql php7.0-mbstring
+        php7.0-phpdbg php7.0-dev php7.0-sqlite3 php7.0-json php7.0-gd php7.0-cli
         awstats webalizer
-        exim4 exim4-daemon-heavy
+        exim4 exim4-daemon-heavy bind9
         dovecot-imapd dovecot-pop3d mysql-server mysql-common
         mysql-client postgresql postgresql-contrib phppgadmin mc
         flex whois rssh git idn zip sudo bc ftp lsof ntpdate rrdtool
@@ -177,7 +178,6 @@ apt-get -y install python-software-properties language-pack-en-base
 LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php -y
 
 
-
 #----------------------------------------------------------#
 #                     Package Exludes                      #
 #----------------------------------------------------------#
@@ -187,6 +187,10 @@ if [ "$postgresql" = 'no' ]; then
     software=$(echo "$software" | sed -e 's/postgresql//')
     software=$(echo "$software" | sed -e 's/php7.0-pgsql//')
     software=$(echo "$software" | sed -e 's/phppgadmin//')
+fi
+
+if [ "$named" = 'no' ]; then
+    software=$(echo "$software" | sed -e "s/bind9//")
 fi
 
 
@@ -273,6 +277,11 @@ echo "WEB_SSL_PORT='443'" >> $VESTA/conf/vesta.conf
 echo "WEB_SSL='openssl'"  >> $VESTA/conf/vesta.conf
 echo "WEB_BACKEND='php7.0-fpm'" >> $VESTA/conf/vesta.conf
 echo "STATS_SYSTEM='webalizer,awstats'" >> $VESTA/conf/vesta.conf
+
+# DNS stack
+if [ "$named" = 'yes' ]; then
+    echo "DNS_SYSTEM='bind9'" >> $VESTA/conf/vesta.conf
+fi
 
 # Mail stack
 echo "MAIL_SYSTEM='exim4'" >> $VESTA/conf/vesta.conf
@@ -432,6 +441,21 @@ if [ "$postgresql" = 'yes' ]; then
         wget $vestacp/pga/phppgadmin.conf -O /etc/apache2/conf.d/phppgadmin.conf
     fi
     wget $vestacp/pga/config.inc.php -O /etc/phppgadmin/config.inc.php
+fi
+
+
+#----------------------------------------------------------#
+#                      Configure Bind                      #
+#----------------------------------------------------------#
+
+if [ "$named" = 'yes' ]; then
+    wget $vestacp/bind/named.conf -O /etc/bind/named.conf
+    sed -i "s%listen-on%//listen%" /etc/bind/named.conf.options
+    chown root:bind /etc/bind/named.conf
+    chmod 640 /etc/bind/named.conf
+    #update-rc.d bind9 defaults
+    service bind9 start
+    #check_result $? "bind9 start failed"
 fi
 
 

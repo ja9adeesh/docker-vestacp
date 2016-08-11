@@ -13,9 +13,10 @@ ADD install-ubuntu.sh /install-ubuntu.sh
 RUN chmod +x /install-ubuntu.sh
 
 RUN bash /install-ubuntu.sh \
- --password admin \
- -y no -f \
- && apt-get clean
+  --password admin \
+  --mysql yes --postgresql no \
+  -y no -f \
+  && apt-get clean
 
 ADD dovecot /etc/init.d/dovecot
 RUN chmod +x /etc/init.d/dovecot
@@ -34,7 +35,7 @@ RUN mkdir /vesta-start \
     && mv /home /vesta-start/home \
     && rm -rf /home \
     && ln -s /vesta/home /home \
-    && mv /etc/php   /vesta-start/etc/php \
+    && mv /etc/php /vesta-start/etc/php \
     && rm -rf /etc/php \
     && ln -s /vesta/etc/php /etc/php \
     && mv /etc/nginx   /vesta-start/etc/nginx \
@@ -54,7 +55,21 @@ RUN mkdir /vesta-start \
     && ln -s /vesta/root /root \
     && mv /usr/local/vesta /vesta-start/local/vesta \
     && rm -rf /usr/local/vesta \
-    && ln -s /vesta/local/vesta /usr/local/vesta
+    && ln -s /vesta/local/vesta /usr/local/vesta \
+    && mv /etc/shadow /vesta-start/etc/shadow \
+    && rm -rf /etc/shadow \
+    && ln -s /vesta/etc/shadow /etc/shadow \
+    && mv /etc/bind /vesta-start/etc/bind \
+    && rm -rf /etc/bind \
+    && ln -s /vesta/etc/bind /etc/bind \
+    && mv /etc/profile /vesta-start/etc/profile \
+    && rm -rf /etc/profile \
+    && ln -s /vesta/etc/profile /etc/profile \
+    && rm -rf /var/lib/mysql \
+    && ln -s /vesta/var/mysql /var/lib/mysql \
+    && mv /var/log /vesta-start/var/log \
+    && rm -rf /var/log \
+    && ln -s /vesta/var/log /var/log
 
 VOLUME /vesta
 
