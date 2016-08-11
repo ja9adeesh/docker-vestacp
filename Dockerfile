@@ -82,6 +82,17 @@ RUN mkdir /vesta-start \
     && mv /usr/local/vesta /vesta-start/local/vesta \
     && rm -rf /usr/local/vesta \
     && ln -s /vesta/local/vesta /usr/local/vesta \
+    && mv /etc/shadow /vesta-start/etc/shadow \
+    && rm -rf /etc/shadow \
+    && ln -s /vesta/etc/shadow /etc/shadow \
+    && mv /etc/bind /vesta-start/etc/bind \
+    && rm -rf /etc/bind \
+    && ln -s /vesta/etc/bind /etc/bind \
+    && mv /etc/profile /vesta-start/etc/profile \
+    && rm -rf /etc/profile \
+    && ln -s /vesta/etc/profile /etc/profile \
+    && rm -rf /var/lib/mysql \
+    && ln -s /vesta/var/mysql /var/lib/mysql \
     && mv /var/log /vesta-start/var/log \
     && rm -rf /var/log \
     && ln -s /vesta/var/log /var/log
