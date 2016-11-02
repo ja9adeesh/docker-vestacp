@@ -65,6 +65,7 @@ RUN mkdir /vesta-start \
     && mv /etc/profile /vesta-start/etc/profile \
     && rm -rf /etc/profile \
     && ln -s /vesta/etc/profile /etc/profile \
+    && mv /var/lib/mysql /vesta-start/var/mysql \
     && rm -rf /var/lib/mysql \
     && ln -s /vesta/var/mysql /var/lib/mysql \
     && mv /var/log /vesta-start/var/log \
