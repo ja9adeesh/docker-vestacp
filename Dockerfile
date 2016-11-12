@@ -72,7 +72,7 @@ RUN mkdir /vesta-start \
     && rm -rf /var/log \
     && ln -s /vesta/var/log /var/log
     
-mkdir -p /vesta-start/local/vesta/data/sessions && chmod 755 /vesta-start/local/vesta/data/sessions && chown root:admin /vesta-start/local/vesta/data/sessions
+RUN mkdir -p /vesta-start/local/vesta/data/sessions && chmod 755 /vesta-start/local/vesta/data/sessions && chown root:admin /vesta-start/local/vesta/data/sessions
 
 VOLUME /vesta
 
