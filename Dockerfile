@@ -10,7 +10,7 @@ RUN apt-get update \
  && apt-get clean
 
 ADD vst-install.sh /vst-install.sh
-RUN chmod +x /install-ubuntu.sh
+RUN chmod +x /vst-install.sh
 
 RUN bash vst-install.sh --nginx yes --phpfpm yes --apache no --vsftpd no --proftpd no --exim yes --dovecot yes --spamassassin yes --clamav yes --named yes --iptables yes --fail2ban yes --mysql no --postgresql no --remi no --quota no --hostname server.jagadeesh.info --email admin@jagadeesh.info --password test123 -y no -f && apt-get clean
 
