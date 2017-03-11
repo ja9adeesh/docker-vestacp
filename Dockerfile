@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.15
+FROM phusion/baseimage
 
 MAINTAINER ivan@lagunovsky.com
 
@@ -12,7 +12,7 @@ RUN apt-get update \
 ADD vst-install.sh /vst-install.sh
 RUN chmod +x /vst-install.sh
 
-RUN bash vst-install.sh --nginx yes --phpfpm yes --apache no --vsftpd no --proftpd no --exim yes --dovecot yes --spamassassin yes --clamav yes --named yes --iptables yes --fail2ban yes --mysql no --postgresql no --remi no --quota no --hostname server.jagadeesh.info --email admin@jagadeesh.info --password test123 -y no -f && apt-get clean
+RUN bash vst-install.sh --nginx yes --phpfpm no --apache no --vsftpd no --proftpd no --exim yes --dovecot yes --spamassassin yes --clamav no --named yes --iptables no --fail2ban no --mysql yes --postgresql no --remi no --quota no --hostname server.jagadeesh.info --email admin@jagadeesh.info --password test123 -y no -f && apt-get clean
 
 ADD dovecot /etc/init.d/dovecot
 RUN chmod +x /etc/init.d/dovecot
@@ -43,6 +43,9 @@ RUN mkdir /vesta-start \
     && mv /etc/dovecot /vesta-start/etc/dovecot \
     && rm -rf /etc/dovecot \
     && ln -s /vesta/etc/dovecot /etc/dovecot \
+    && mv /etc/mysql   /vesta-start/etc/mysql \
+    && rm -rf /etc/mysql \
+    && ln -s /vesta/etc/mysql /etc/mysql \
     && mv /root /vesta-start/root \
     && rm -rf /root \
     && ln -s /vesta/root /root \
@@ -58,6 +61,9 @@ RUN mkdir /vesta-start \
     && mv /etc/profile /vesta-start/etc/profile \
     && rm -rf /etc/profile \
     && ln -s /vesta/etc/profile /etc/profile \
+    && mv /var/lib/mysql /vesta-start/var/mysql \
+    && rm -rf /var/lib/mysql \
+    && ln -s /vesta/var/mysql /var/lib/mysql \
     && mv /var/log /vesta-start/var/log \
     && rm -rf /var/log \
     && ln -s /vesta/var/log /var/log
@@ -71,3 +77,5 @@ ADD startup.sh /etc/my_init.d/startup.sh
 RUN chmod +x /etc/my_init.d/startup.sh
 
 EXPOSE 22 80 8083 3306 443 25 993 110 53 54
+
+ENTRYPOINT bash /etc/my_init.d/startup.sh
