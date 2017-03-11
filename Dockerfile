@@ -13,7 +13,7 @@ ADD vst-install.sh /vst-install.sh
 RUN chmod +x /vst-install.sh
 
 RUN bash /vst-install.sh \
-  --nginx yes --phpfpm no --apache no --vsftpd no --proftpd no --exim yes --dovecot yes --spamassassin yes --clamav no --named yes --iptables no --fail2ban no --mysql yes --postgresql no --remi no --quota no --hostname server.jagadeesh.info --email admin@jagadeesh.info --password test123 -y no -f && apt-get clean
+  --nginx yes --phpfpm no --apache yes --vsftpd no --proftpd no --exim yes --dovecot yes --spamassassin yes --clamav no --named yes --iptables no --fail2ban no --mysql yes --postgresql no --remi no --quota no --hostname server.jagadeesh.info --email admin@jagadeesh.info --password test123 -y no -f && apt-get clean
 
 ADD dovecot /etc/init.d/dovecot
 RUN chmod +x /etc/init.d/dovecot
@@ -28,6 +28,12 @@ RUN mkdir /vesta-start \
     && mv /home /vesta-start/home \
     && rm -rf /home \
     && ln -s /vesta/home /home \
+    && mv /etc/apache2 /vesta-start/etc/apache2 \
+    && rm -rf /etc/apache2 \
+    && ln -s /vesta/etc/apache2 /etc/apache2 \
+    && mv /etc/php5   /vesta-start/etc/php5 \
+    && rm -rf /etc/php5 \
+    && ln -s /vesta/etc/php5 /etc/php5 \
     && mv /etc/nginx   /vesta-start/etc/nginx \
     && rm -rf /etc/nginx \
     && ln -s /vesta/etc/nginx /etc/nginx \
