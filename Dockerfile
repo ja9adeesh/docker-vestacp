@@ -9,21 +9,10 @@ RUN apt-get update \
  && apt-get -y install git unzip nano \
  && apt-get clean
 
-ADD install-ubuntu.sh /install-ubuntu.sh
+ADD vst-install.sh /vst-install.sh
 RUN chmod +x /install-ubuntu.sh
 
-RUN bash /install-ubuntu.sh \
- --nginx yes --apache no --phpfpm yes \
- --vsftpd no --proftpd no \
- --exim yes --dovecot yes --spamassassin yes --clamav yes \
- --named yes \
- --iptables no --fail2ban no \
- --mysql no --postgresql no \
- --remi no \
- --quota no \
- --password admin \
- -y no -f \
- && apt-get clean
+RUN bash vst-install.sh --nginx yes --phpfpm yes --apache no --vsftpd no --proftpd no --exim yes --dovecot yes --spamassassin yes --clamav yes --named yes --iptables yes --fail2ban yes --mysql no --postgresql no --remi no --quota no --hostname server.jagadeesh.info --email admin@jagadeesh.info --password test123 -y no -f && apt-get clean
 
 ADD dovecot /etc/init.d/dovecot
 RUN chmod +x /etc/init.d/dovecot
@@ -42,36 +31,18 @@ RUN mkdir /vesta-start \
     && mv /home /vesta-start/home \
     && rm -rf /home \
     && ln -s /vesta/home /home \
-    && mv /etc/php5   /vesta-start/etc/php5 \
-    && rm -rf /etc/php5 \
-    && ln -s /vesta/etc/php5 /etc/php5 \
+    && mv /etc/php /vesta-start/etc/php \
+    && rm -rf /etc/php \
+    && ln -s /vesta/etc/php /etc/php \
     && mv /etc/nginx   /vesta-start/etc/nginx \
     && rm -rf /etc/nginx \
     && ln -s /vesta/etc/nginx /etc/nginx \
-    && mv /etc/bind    /vesta-start/etc/bind \
-    && rm -rf /etc/bind \
-    && ln -s /vesta/etc/bind /etc/bind \
     && mv /etc/exim4   /vesta-start/etc/exim4 \
     && rm -rf /etc/exim4 \
     && ln -s /vesta/etc/exim4 /etc/exim4 \
     && mv /etc/dovecot /vesta-start/etc/dovecot \
     && rm -rf /etc/dovecot \
     && ln -s /vesta/etc/dovecot /etc/dovecot \
-    && mv /etc/clamav  /vesta-start/etc/clamav \
-    && rm -rf /etc/clamav \
-    && ln -s /vesta/etc/clamav /etc/clamav \
-    && mv /etc/spamassassin    /vesta-start/etc/spamassassin \
-    && rm -rf /etc/spamassassin \
-    && ln -s /vesta/etc/spamassassin /etc/spamassassin \
-    && mv /etc/roundcube   /vesta-start/etc/roundcube \
-    && rm -rf /etc/roundcube \
-    && ln -s /vesta/etc/roundcube /etc/roundcube \
-    && mv /etc/mysql   /vesta-start/etc/mysql \
-    && rm -rf /etc/mysql \
-    && ln -s /vesta/etc/mysql /etc/mysql \
-    && mv /etc/phpmyadmin  /vesta-start/etc/phpmyadmin \
-    && rm -rf /etc/phpmyadmin \
-    && ln -s /vesta/etc/phpmyadmin /etc/phpmyadmin \
     && mv /root /vesta-start/root \
     && rm -rf /root \
     && ln -s /vesta/root /root \
@@ -87,9 +58,6 @@ RUN mkdir /vesta-start \
     && mv /etc/profile /vesta-start/etc/profile \
     && rm -rf /etc/profile \
     && ln -s /vesta/etc/profile /etc/profile \
-    && mv /var/lib/mysql /vesta-start/var/mysql \
-    && rm -rf /var/lib/mysql \
-    && ln -s /vesta/var/mysql /var/lib/mysql \
     && mv /var/log /vesta-start/var/log \
     && rm -rf /var/log \
     && ln -s /vesta/var/log /var/log
