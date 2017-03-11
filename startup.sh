@@ -13,5 +13,5 @@ cd /etc/init.d/ \
 && ./mysql start \
 && ./nginx start \
 && ./exim4 start \
-&& ./php7.0-fpm start \
+&& ./bind9 start
 && ./dovecot start
