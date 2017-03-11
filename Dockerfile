@@ -40,9 +40,6 @@ RUN mkdir /vesta-start \
     && mv /etc/dovecot /vesta-start/etc/dovecot \
     && rm -rf /etc/dovecot \
     && ln -s /vesta/etc/dovecot /etc/dovecot \
-    && mv /etc/clamav  /vesta-start/etc/clamav \
-    && rm -rf /etc/clamav \
-    && ln -s /vesta/etc/clamav /etc/clamav \
     && mv /etc/spamassassin    /vesta-start/etc/spamassassin \
     && rm -rf /etc/spamassassin \
     && ln -s /vesta/etc/spamassassin /etc/spamassassin \
