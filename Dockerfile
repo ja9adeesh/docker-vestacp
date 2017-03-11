@@ -28,9 +28,6 @@ RUN mkdir /vesta-start \
     && mv /home /vesta-start/home \
     && rm -rf /home \
     && ln -s /vesta/home /home \
-    && mv /etc/php5   /vesta-start/etc/php5 \
-    && rm -rf /etc/php5 \
-    && ln -s /vesta/etc/php5 /etc/php5 \
     && mv /etc/nginx   /vesta-start/etc/nginx \
     && rm -rf /etc/nginx \
     && ln -s /vesta/etc/nginx /etc/nginx \
